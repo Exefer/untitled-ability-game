@@ -1,5 +1,5 @@
 interface LeaderstatValues {
-  Punches: number;
+  Points: number;
 }
 
 export class Leaderstats {
@@ -35,15 +35,15 @@ export class Leaderstats {
     leaderstats.Name = "leaderstats";
     leaderstats.Parent = player;
 
-    const punches = new Instance("IntValue");
-    punches.Name = "Punches";
-    punches.Value = 0;
-    punches.Parent = leaderstats;
+    const points = new Instance("IntValue");
+    points.Name = "Points";
+    points.Value = 0;
+    points.Parent = leaderstats;
 
     const isPrimary = new Instance("BoolValue");
     isPrimary.Name = "IsPrimary";
     isPrimary.Value = true;
-    isPrimary.Parent = punches;
+    isPrimary.Parent = points;
 
     if (!startValues) return;
     this.updateLeaderstatValues(leaderstats, startValues);
@@ -66,9 +66,9 @@ export class Leaderstats {
    */
   public static getValues(player: Player): LeaderstatValues {
     const leaderstats = this.getLeaderstatsFolder(player);
-    const punches = leaderstats.FindFirstChild("Punches") as IntValue;
+    const points = leaderstats.FindFirstChild("Points") as IntValue;
     return {
-      Punches: punches.Value,
+      Points: points.Value,
     };
   }
 }

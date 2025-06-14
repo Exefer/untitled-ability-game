@@ -3,8 +3,8 @@ import { DataStoreService, Players } from "@rbxts/services";
 import { Leaderstats } from "server/modules/leaderstats";
 import { PlayerDataConfig } from "server/stores/player-data";
 
-// TODO: Maybe create a module for saving punches for DRY
-const PunchesStore = DataStoreService.GetOrderedDataStore("Punches");
+// TODO: Maybe create a module for saving points for DRY
+const PointsStore = DataStoreService.GetOrderedDataStore("Points");
 const PlayerDataStore = Lyra.createPlayerStore({
   name: "PlayerData",
   template: PlayerDataConfig.DataStructure,
@@ -16,17 +16,17 @@ Players.PlayerAdded.Connect((player: Player) => {
   PlayerDataStore.loadAsync(player);
 
   const [success, result] = pcall(() => {
-    return PunchesStore.GetAsync(tostring(player.UserId))!;
+    return PointsStore.GetAsync(tostring(player.UserId))!;
   });
 
-  Leaderstats.setup(player, success ? { Punches: result } : undefined);
+  Leaderstats.setup(player, success ? { Points: result } : undefined);
 });
 
 Players.PlayerRemoving.Connect((player: Player) => {
   PlayerDataStore.unloadAsync(player);
 
   const [success, err] = pcall(() => {
-    PunchesStore.SetAsync(tostring(player.UserId), Leaderstats.getValues(player).Punches);
+    PointsStore.SetAsync(tostring(player.UserId), Leaderstats.getValues(player).Points);
   });
 
   if (!success) {
@@ -45,7 +45,7 @@ game.BindToClose(async () => {
       () =>
         new Promise((resolve, reject) => {
           const [success, err] = pcall(() =>
-            PunchesStore.SetAsync(tostring(player.UserId), Leaderstats.getValues(player).Punches)
+            PointsStore.SetAsync(tostring(player.UserId), Leaderstats.getValues(player).Points)
           );
           if (success) resolve(true);
           else reject(err);

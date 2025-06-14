@@ -7,7 +7,7 @@ const MessageSchema = t.strictInterface({
   value: t.number,
 });
 
-const TOPIC = "uag-setpunches";
+const TOPIC = "uag-setpoints";
 
 MessagingService.SubscribeAsync(TOPIC, message => {
   const data = HttpService.JSONDecode(message.Data as string);
@@ -20,5 +20,5 @@ MessagingService.SubscribeAsync(TOPIC, message => {
   const player = Players.GetPlayerByUserId(data.targetId);
 
   if (!player) return;
-  Leaderstats.updateValues(player, { Punches: data.value });
+  Leaderstats.updateValues(player, { Points: data.value });
 });
